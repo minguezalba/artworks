@@ -3,11 +3,11 @@
 """
 import csv
 from collections import defaultdict
-from typing import Dict
+from typing import Dict, List
 
 from artworks.constants import BATCH_SIZE
 from artworks.interactors import remove_punctuation
-from artworks.adapters.mongodb import insert_many_artworks
+from artworks.adapters.mongodb import insert_many_artworks, get_artworks
 
 
 def format_artwork_doc(artwork_rows):
@@ -70,3 +70,16 @@ def read_artworks_from_csv(filename: str) -> None:
 
     artwork_docs = [format_artwork_doc(x) for x in artworks_raw.values()]
     insert_many_artworks(artwork_docs)
+
+
+def get_right_owners_by_iswc(iswc: str) -> List:
+    """Get right owners metadata for the queried artwork by ISWC.
+
+    Args:
+        iswc: ISWC code to filter artwork
+
+    Returns:
+        A list with the right owners metadata.
+    """
+    docs = get_artworks(iswc)
+    return docs[0].get('right_owners', [])
