@@ -2,7 +2,7 @@
 ~~~~~~~~~~~~~~~~~~~~~~~~
 """
 
-from typing import List, Union
+from typing import List
 
 from pymongo import MongoClient  # type: ignore
 
@@ -21,7 +21,7 @@ def insert_many_artworks(artwork_docs: List) -> None:
     db[COLLECTION].insert_many(artwork_docs)
 
 
-def get_artworks(iswc_filter: Union[List, None] = []):
+def get_artworks(iswc_filter: str = None):
     """Get all artwork documents from MongoDB collection. Optionally, you can filter them by iswc code.
 
     Args:
@@ -32,7 +32,7 @@ def get_artworks(iswc_filter: Union[List, None] = []):
     """
 
     if iswc_filter:
-        cursor = db[COLLECTION].find({'iswc': {'$in': iswc_filter}})
+        cursor = db[COLLECTION].find({'iswc': iswc_filter})
     else:
         cursor = db[COLLECTION].find()
 
