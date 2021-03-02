@@ -6,6 +6,7 @@ from collections import defaultdict
 from typing import Dict
 
 from artworks.constants import BATCH_SIZE
+from artworks.interactors import remove_punctuation
 from artworks.adapters.mongodb import insert_many_artworks
 
 
@@ -32,14 +33,14 @@ def format_artwork_doc(artwork_rows):
         titles_unique = {f'{title}#{title_type}' for title, title_type in zip(titles, title_types)}
 
     artwork_doc = {
-        "_id": base_row["ID SOCIETY"],
-        "iswc": base_row["ISWC"],
+        "_id": int(base_row["ID SOCIETY"]),
+        "iswc": remove_punctuation(base_row["ISWC"]),
         "titles": [
             {"title": t.split('#')[0], "type": t.split('#')[1]}
             for t in titles_unique
         ],
         "right_owners": [
-            {"name": row["RIGHT OWNER"], "role": row["ROLE"], "ipi": row["IPI NUMBER"]}
+            {"name": row["RIGHT OWNER"], "role": row["ROLE"], "ipi": row["IPI NUMBER"].zfill(11)}
             for row in artwork_rows
         ],
     }

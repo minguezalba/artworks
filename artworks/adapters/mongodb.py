@@ -32,8 +32,8 @@ def get_artworks(iswc_filter: Union[List, None] = []):
     """
 
     if iswc_filter:
-        cursor = db.artworks.find({'iswc': {'$in': iswc_filter}})
+        cursor = db[COLLECTION].find({'iswc': {'$in': iswc_filter}})
     else:
-        cursor = db.artworks.find()
+        cursor = db[COLLECTION].find()
 
     return [doc for doc in cursor]
