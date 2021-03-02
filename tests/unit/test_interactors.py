@@ -15,7 +15,7 @@ from artworks.interactors.artworks import format_artwork_doc
               'ALTERNATIVE TITLE 1': 'test_artwork_alt_title',
               ' ALTERNATIVE TITLE 2': '',
               'ALTERNATIVE TITLE 3': '',
-              'RIGHT OWNER': 'test_ownwer_1',
+              'RIGHT OWNER': 'test_owner_1',
               'ROLE': 'test_role_1',
               'IPI NUMBER': '11111111',
               'ID SOCIETY': 11111},
@@ -24,15 +24,15 @@ from artworks.interactors.artworks import format_artwork_doc
               'ALTERNATIVE TITLE 1': 'test_artwork_alt_title',
               ' ALTERNATIVE TITLE 2': '',
               'ALTERNATIVE TITLE 3': '',
-              'RIGHT OWNER': 'test_ownwer_2',
+              'RIGHT OWNER': 'test_owner_2',
               'ROLE': 'test_role_2',
               'IPI NUMBER': '222222',
               'ID SOCIETY': 11111}],
             {'_id': 11111, 'iswc': 'T12345',
              'titles': [{'title': 'test_artwork_orig_title', 'type': 'OriginalTitle'},
                         {'title': 'test_artwork_alt_title', 'type': 'AlternativeTitle'}],
-             'right_owners': [{'name': 'test_ownwer_1', 'role': 'test_role_1', 'ipi': '00011111111'},
-                              {'name': 'test_ownwer_2', 'role': 'test_role_2', 'ipi': '00000222222'}]
+             'right_owners': [{'name': 'test_owner_1', 'role': 'test_role_1', 'ipi': '00011111111'},
+                              {'name': 'test_owner_2', 'role': 'test_role_2', 'ipi': '00000222222'}]
              }
         ),
     ],
