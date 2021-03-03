@@ -1,18 +1,22 @@
 """Integration tests for read from csv."""
 
+import pytest
 from unittest.mock import patch
 
-from artworks.adapters.mongodb import get_artworks
+from flask.testing import FlaskClient
+from pymongo.errors import BulkWriteError  # type: ignore
+
 from artworks.constants import COLLECTION_TEST
 from artworks.interactors.artworks import read_artworks_from_csv
 
 
 @patch('artworks.adapters.mongodb.COLLECTION', COLLECTION_TEST)
-def test_read_from_csv(create_clean_test_collection) -> None:
+def test_read_from_csv(client: FlaskClient, create_clean_test_collection) -> None:
     """Test read from CSV and insert in MongoDB dataset."""
     filename = 'files/artworks_test.csv'
     read_artworks_from_csv(filename)
-    docs = get_artworks()
+
+    rv = client.get('/artworks')
 
     assert [{"_id": 2141219,
              "iswc": "T0420889173",
@@ -27,4 +31,14 @@ def test_read_from_csv(create_clean_test_collection) -> None:
                               {"name": "FRANCISCO MARTINEZ SOCIAS",
                                "role": "Compositor",
                                "ipi": "00222084113"}]
-             }] == docs
+             }] == rv.json['artworks']
+
+
+@patch('artworks.adapters.mongodb.COLLECTION', COLLECTION_TEST)
+def test_error_read_from_csv(client: FlaskClient, create_clean_test_collection) -> None:
+    """Test read from CSV and insert in MongoDB dataset."""
+    filename = 'files/artworks_test.csv'
+
+    with pytest.raises(BulkWriteError):
+        read_artworks_from_csv(filename)
+        read_artworks_from_csv(filename)

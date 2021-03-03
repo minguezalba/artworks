@@ -5,7 +5,7 @@ from typing import Dict, Tuple
 
 from flask import Blueprint
 
-from artworks.interactors.artworks import get_right_owners_by_iswc
+from artworks.interactors.artworks import get_all_artworks, get_right_owners_by_iswc
 
 api = Blueprint('Artworks', __name__)
 
@@ -49,3 +49,56 @@ def get_right_owners(iswc: str) -> Tuple[Dict, int]:
     """
     right_owners = get_right_owners_by_iswc(iswc)
     return {'right_owners': right_owners}, 200
+
+
+@api.route('/artworks', methods=['GET'])
+def get_artworks() -> Tuple[Dict, int]:
+    """Get list of all artwork documents existing in the collection.
+    ---
+
+    tags:
+        - Artworks
+
+    definitions:
+      Title:
+        type: object
+        properties:
+          title:
+            type: string
+            description: Title of the artwork
+          type:
+            type: string
+            description: Title type, can be OriginalTitle or AlternativeTitle
+      ArtworkDoc:
+        type: object
+        properties:
+          _id:
+            type: integer
+            description: The primary key, a identifier assigned by the society.
+          iswc:
+            type: string
+            description: ISWC code.
+          titles:
+            type: array
+            description: List with the titles information
+            items:
+              $ref: '#/definitions/Title'
+          right_owners:
+            type: array
+            description: List with right owner information.
+            items:
+              $ref: '#/definitions/RightOwner'
+
+    responses:
+        200:
+            description: List of all artwork documents.
+            schema:
+              type: object
+              properties:
+                artworks:
+                  type: array
+                  items:
+                    $ref: '#/definitions/ArtworkDoc'
+    """
+    artworks = get_all_artworks()
+    return {'artworks': artworks}, 200
