@@ -6,7 +6,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 - Read from CSV and insert into MongoDB script
-- API with GET route to get right owners metadata
+- API with GET routes: to get right owners metadata and all artworks
+- Documentation
 
 ## [0.0.1] - 2021-03-02
 - Skeleton

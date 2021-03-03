@@ -81,5 +81,14 @@ def get_right_owners_by_iswc(iswc: str) -> List:
     Returns:
         A list with the right owners metadata.
     """
-    docs = get_artworks(iswc)
+    docs = get_artworks({'iswc': iswc})
     return docs[0].get('right_owners', [])
+
+
+def get_all_artworks() -> List:
+    """Get all the artwork documents in MongoDB collection.
+
+    Returns:
+        A list of artwork documents.
+    """
+    return get_artworks()

@@ -2,9 +2,11 @@
 ~~~~~~~~~~~~~~~~~~~~~~~~
 """
 
-from typing import List
+from typing import Dict, List
+import logging
 
 from pymongo import MongoClient  # type: ignore
+from pymongo.errors import BulkWriteError  # type: ignore
 
 from artworks.constants import MONGODB_URL, DATASET, COLLECTION
 
@@ -18,22 +20,21 @@ def insert_many_artworks(artwork_docs: List) -> None:
     Args:
         artwork_docs: artwork documents to insert
     """
-    db[COLLECTION].insert_many(artwork_docs)
+    try:
+        db[COLLECTION].insert_many(artwork_docs)
+    except BulkWriteError as error:
+        logging.error(error)
+        raise
 
 
-def get_artworks(iswc_filter: str = None):
+def get_artworks(filter_fields: Dict = dict()):
     """Get all artwork documents from MongoDB collection. Optionally, you can filter them by iswc code.
 
     Args:
-        iswc_filter: List od iswc codes to filter artwork documents
+        filter_fields: (Optional) Filters in a key-value format.
 
     Returns:
         List of all artworks (or artworks which iswc is in iswc_filter list)
     """
-
-    if iswc_filter:
-        cursor = db[COLLECTION].find({'iswc': iswc_filter})
-    else:
-        cursor = db[COLLECTION].find()
-
+    cursor = db[COLLECTION].find(filter_fields)
     return [doc for doc in cursor]

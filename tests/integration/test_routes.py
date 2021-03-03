@@ -8,7 +8,7 @@ from artworks.constants import COLLECTION_TEST
 
 
 @patch('artworks.adapters.mongodb.COLLECTION', COLLECTION_TEST)
-def test_read_from_csv(client: FlaskClient, create_fill_clean_test_collection) -> None:
+def test_get_right_owners_metadata(client: FlaskClient, create_fill_clean_test_collection) -> None:
     """Test read from CSV and insert in MongoDB dataset."""
     test_iswc = 'T98765'
     rv = client.get(f'/artworks/{test_iswc}/right-owners')
